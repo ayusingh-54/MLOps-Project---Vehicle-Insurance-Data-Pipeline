@@ -53,7 +53,20 @@ class ModelEvaluation:
     def _map_gender_column(self, df):
         """Map Gender column to 0 for Female and 1 for Male."""
         logging.info("Mapping 'Gender' column to binary values")
-        df['Gender'] = df['Gender'].map({'Female': 0, 'Male': 1}).astype(int)
+        # Handle missing values by filling them before mapping
+        if df['Gender'].isnull().any():
+            mode_value = df['Gender'].mode()[0] if not df['Gender'].mode().empty else 'Male'
+            logging.info(f"Found {df['Gender'].isnull().sum()} missing values in Gender column. Filling with mode: {mode_value}")
+            df['Gender'] = df['Gender'].fillna(mode_value)
+        
+        df['Gender'] = df['Gender'].map({'Female': 0, 'Male': 1})
+        
+        # Check if mapping introduced any NaN (e.g., unexpected values like 'Other')
+        if df['Gender'].isnull().any():
+            logging.warning(f"Found {df['Gender'].isnull().sum()} unmapped values in Gender column after mapping. Filling with 0 (Female)")
+            df['Gender'] = df['Gender'].fillna(0)
+        
+        df['Gender'] = df['Gender'].astype(int)
         return df
 
     def _create_dummy_columns(self, df):
