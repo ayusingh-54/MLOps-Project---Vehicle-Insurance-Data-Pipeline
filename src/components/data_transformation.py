@@ -74,7 +74,22 @@ class DataTransformation:
     def _map_gender_column(self, df):
         """Map Gender column to 0 for Female and 1 for Male."""
         logging.info("Mapping 'Gender' column to binary values")
-        df['Gender'] = df['Gender'].map({'Female': 0, 'Male': 1}).astype(int)
+        # Handle missing values by filling them before mapping
+        # You can choose to fill with mode, or drop rows with missing Gender
+        # Here we'll fill with the most common value (mode)
+        if df['Gender'].isnull().any():
+            mode_value = df['Gender'].mode()[0] if not df['Gender'].mode().empty else 'Male'
+            logging.info(f"Found {df['Gender'].isnull().sum()} missing values in Gender column. Filling with mode: {mode_value}")
+            df['Gender'] = df['Gender'].fillna(mode_value)
+        
+        df['Gender'] = df['Gender'].map({'Female': 0, 'Male': 1})
+        
+        # Check if mapping introduced any NaN (e.g., unexpected values like 'Other')
+        if df['Gender'].isnull().any():
+            logging.warning(f"Found {df['Gender'].isnull().sum()} unmapped values in Gender column after mapping. Filling with 0 (Female)")
+            df['Gender'] = df['Gender'].fillna(0)
+        
+        df['Gender'] = df['Gender'].astype(int)
         return df
 
     def _create_dummy_columns(self, df):
@@ -145,6 +160,26 @@ class DataTransformation:
             logging.info("Initializing transformation for Testing-data")
             input_feature_test_arr = preprocessor.transform(input_feature_test_df)
             logging.info("Transformation done end to end to train-test df.")
+
+            # Handle NaN values in target columns before SMOTEENN
+            logging.info("Checking and handling NaN values in target columns")
+            if target_feature_train_df.isnull().any():
+                nan_count_train = target_feature_train_df.isnull().sum()
+                logging.warning(f"Found {nan_count_train} NaN values in training target column. Dropping these rows.")
+                # Get indices of non-NaN values
+                valid_indices_train = ~target_feature_train_df.isnull()
+                target_feature_train_df = target_feature_train_df[valid_indices_train]
+                input_feature_train_arr = input_feature_train_arr[valid_indices_train]
+            
+            if target_feature_test_df.isnull().any():
+                nan_count_test = target_feature_test_df.isnull().sum()
+                logging.warning(f"Found {nan_count_test} NaN values in testing target column. Dropping these rows.")
+                # Get indices of non-NaN values
+                valid_indices_test = ~target_feature_test_df.isnull()
+                target_feature_test_df = target_feature_test_df[valid_indices_test]
+                input_feature_test_arr = input_feature_test_arr[valid_indices_test]
+            
+            logging.info("NaN values handled in target columns")
 
             logging.info("Applying SMOTEENN for handling imbalanced dataset.")
             smt = SMOTEENN(sampling_strategy="minority")
