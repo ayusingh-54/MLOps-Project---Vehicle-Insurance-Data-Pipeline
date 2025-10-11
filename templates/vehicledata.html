@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vehicle Insurance Prediction | AI-Powered Analysis</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Animated Background -->
+    <div class="background-animation">
+        <div class="circle circle-1"></div>
+        <div class="circle circle-2"></div>
+        <div class="circle circle-3"></div>
+    </div>
+
+    <div class="container">
+        <!-- Header Section -->
+        <div class="header">
+            <div class="logo">
+                <i class="fas fa-car-side"></i>
+                <span>VehicleAI</span>
+            </div>
+            <h1>Vehicle Insurance Prediction</h1>
+            <p class="subtitle">AI-Powered Risk Assessment & Premium Analysis</p>
+        </div>
+
+        <!-- Main Form -->
+        <form method="post" action="/" class="prediction-form" id="predictionForm">
+            <div class="form-section">
+                <h3><i class="fas fa-user-circle"></i> Personal Information</h3>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="Gender">
+                            <i class="fas fa-venus-mars"></i> Gender
+                        </label>
+                        <select id="Gender" name="Gender" required>
+                            <option value="">Select Gender</option>
+                            <option value="1">Male</option>
+                            <option value="0">Female</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="Age">
+                            <i class="fas fa-birthday-cake"></i> Age
+                        </label>
+                        <input type="number" id="Age" name="Age" placeholder="Enter your age" min="18" max="100" required>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="Driving_License">
+                            <i class="fas fa-id-card"></i> Driving License
+                        </label>
+                        <select id="Driving_License" name="Driving_License" required>
+                            <option value="">Do you have a license?</option>
+                            <option value="1">Yes</option>
+                            <option value="0">No</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="Region_Code">
+                            <i class="fas fa-map-marker-alt"></i> Region Code
+                        </label>
+                        <input type="number" step="0.01" id="Region_Code" name="Region_Code" placeholder="Enter region code" required>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-section">
+                <h3><i class="fas fa-file-contract"></i> Insurance Details</h3>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="Previously_Insured">
+                            <i class="fas fa-shield-alt"></i> Previously Insured
+                        </label>
+                        <select id="Previously_Insured" name="Previously_Insured" required>
+                            <option value="">Select option</option>
+                            <option value="1">Yes</option>
+                            <option value="0">No</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="Annual_Premium">
+                            <i class="fas fa-dollar-sign"></i> Annual Premium
+                        </label>
+                        <input type="number" step="0.01" id="Annual_Premium" name="Annual_Premium" placeholder="Enter premium amount" required>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="Policy_Sales_Channel">
+                            <i class="fas fa-store"></i> Policy Sales Channel
+                        </label>
+                        <input type="number" step="0.01" id="Policy_Sales_Channel" name="Policy_Sales_Channel" placeholder="Channel code" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="Vintage">
+                            <i class="fas fa-calendar-alt"></i> Vintage (Days)
+                        </label>
+                        <input type="number" id="Vintage" name="Vintage" placeholder="Days with company" required>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-section">
+                <h3><i class="fas fa-car"></i> Vehicle Information</h3>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="Vehicle_Age_lt_1_Year">
+                            <i class="fas fa-certificate"></i> Vehicle Age < 1 Year
+                        </label>
+                        <select id="Vehicle_Age_lt_1_Year" name="Vehicle_Age_lt_1_Year" required>
+                            <option value="">Select option</option>
+                            <option value="1">Yes</option>
+                            <option value="0">No</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="Vehicle_Age_gt_2_Years">
+                            <i class="fas fa-history"></i> Vehicle Age > 2 Years
+                        </label>
+                        <select id="Vehicle_Age_gt_2_Years" name="Vehicle_Age_gt_2_Years" required>
+                            <option value="">Select option</option>
+                            <option value="1">Yes</option>
+                            <option value="0">No</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group full-width">
+                        <label for="Vehicle_Damage_Yes">
+                            <i class="fas fa-car-crash"></i> Vehicle Damage History
+                        </label>
+                        <select id="Vehicle_Damage_Yes" name="Vehicle_Damage_Yes" required>
+                            <option value="">Has vehicle been damaged?</option>
+                            <option value="1">Yes</option>
+                            <option value="0">No</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <button type="submit" class="btn btn-primary">
+                <i class="fas fa-brain"></i> Predict Insurance Response
+            </button>
+        </form>
+
+        <!-- Train Model Section -->
+        <div class="train-section">
+            <form method="get" action="/train">
+                <button type="submit" class="btn btn-train">
+                    <i class="fas fa-robot"></i> Train AI Model
+                </button>
+            </form>
+        </div>
+
+        <!-- Result Display -->
+        {% if context and context != "Rendering" %}
+            <div class="result-card {% if 'Yes' in context %}result-positive{% else %}result-negative{% endif %}">
+                <div class="result-icon">
+                    {% if 'Yes' in context %}
+                        <i class="fas fa-check-circle"></i>
+                    {% else %}
+                        <i class="fas fa-times-circle"></i>
+                    {% endif %}
+                </div>
+                <h2>Prediction Result</h2>
+                <div class="result-value">{{ context }}</div>
+                <p class="result-description">
+                    {% if 'Yes' in context %}
+                        The customer is likely to be interested in vehicle insurance!
+                    {% else %}
+                        The customer is unlikely to be interested in vehicle insurance.
+                    {% endif %}
+                </p>
+            </div>
+        {% endif %}
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>Powered by Machine Learning & FastAPI | &copy; 2025 VehicleAI</p>
+    </footer>
+
+    <script>
+        // Form validation and smooth animations
+        document.getElementById('predictionForm').addEventListener('submit', function(e) {
+            const btn = this.querySelector('.btn-primary');
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Analyzing...';
+            btn.disabled = true;
+        });
+
+        // Add input focus effects
+        document.querySelectorAll('input, select').forEach(element => {
+            element.addEventListener('focus', function() {
+                this.parentElement.classList.add('focused');
+            });
+            element.addEventListener('blur', function() {
+                this.parentElement.classList.remove('focused');
+            });
+        });
+    </script>
+</body>
+</html>
